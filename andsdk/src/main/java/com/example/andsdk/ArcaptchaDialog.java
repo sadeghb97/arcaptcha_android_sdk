@@ -1,4 +1,4 @@
-package com.example.arcaptchaandroid;
+package com.example.andsdk;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -24,13 +24,22 @@ public class ArcaptchaDialog extends DialogFragment {
     View rootView;
     WebView webMain;
     ArcaptchaListener arcaptchaListener;
+    public String siteKey;
+    public String domain;
+
+    public static final String ARCAPTCHA_URL = "https://nwidget.arcaptcha.ir/show_challenge";
+
     public static final String ARCAPTCHA_LISTENER_TAG = "arcaptcha_listener";
+    public static final String ARCAPTCHA_SITE_KEY_TAG = "site_key";
+    public static final String ARCAPTCHA_DOMAIN_TAG = "domain";
 
     public ArcaptchaDialog(){}
 
-    public static ArcaptchaDialog getInstance(ArcaptchaListener arcaptchaListener){
+    public static ArcaptchaDialog getInstance(String siteKey, String domain, ArcaptchaListener arcaptchaListener){
         final Bundle args = new Bundle();
         args.putSerializable(ARCAPTCHA_LISTENER_TAG, arcaptchaListener);
+        args.putString(ARCAPTCHA_SITE_KEY_TAG, siteKey);
+        args.putString(ARCAPTCHA_DOMAIN_TAG, domain);
         final ArcaptchaDialog arcaptchaDialog = new ArcaptchaDialog();
         arcaptchaDialog.setArguments(args);
         return arcaptchaDialog;
@@ -43,7 +52,7 @@ public class ArcaptchaDialog extends DialogFragment {
         if (dialog != null)
         {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
-            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            int height = ViewGroup.LayoutParams.MATCH_PARENT;
             dialog.getWindow().setLayout(width, height);
         }
     }
@@ -55,6 +64,8 @@ public class ArcaptchaDialog extends DialogFragment {
 
         Bundle bundle = getArguments();
         arcaptchaListener = (ArcaptchaListener) bundle.getSerializable(ARCAPTCHA_LISTENER_TAG);
+        siteKey = bundle.getString(ARCAPTCHA_SITE_KEY_TAG);
+        domain = bundle.getString(ARCAPTCHA_DOMAIN_TAG);
 
         activity = getActivity();
         rootView = inflater.inflate(R.layout.arcaptcha_fragment, container, false);
@@ -66,7 +77,7 @@ public class ArcaptchaDialog extends DialogFragment {
 
     @SuppressLint({"AddJavascriptInterface", "SetJavaScriptEnabled"})
     public void setupWebView(){
-        JavascriptInterface javascriptInterface = new JavascriptInterface(activity, arcaptchaListener);
+        ArcaptchaJSInterface javascriptInterface = new ArcaptchaJSInterface(activity, arcaptchaListener);
 
         final WebSettings settings = webMain.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -74,12 +85,21 @@ public class ArcaptchaDialog extends DialogFragment {
         webMain.setBackgroundColor(Color.TRANSPARENT);
         webMain.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
         webMain.addJavascriptInterface(javascriptInterface, "AndroidInterface");
-        webMain.loadUrl("http://igpro.ir/arc.php");
+        webMain.loadUrl(getCaptchaUrl());
+    }
+
+    public String getCaptchaUrl(){
+        StringBuilder urlBuilder = new StringBuilder(ARCAPTCHA_URL);
+        urlBuilder.append("?site_key=");
+        urlBuilder.append(siteKey);
+        urlBuilder.append("&domain=");
+        urlBuilder.append(domain);
+        return urlBuilder.toString();
     }
 
     public static abstract class ArcaptchaListener implements Parcelable, Serializable {
         public abstract void onSuccess(String token);
-        public abstract void onFailure();
+        public abstract void onCancel();
 
         @Override
         public int describeContents() {

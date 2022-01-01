@@ -11,7 +11,10 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/androidsdk" />
+            <option value="$PROJECT_DIR$/andsdk" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/arcaptchasdk" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

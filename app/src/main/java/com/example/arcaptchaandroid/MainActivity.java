@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.andsdk.ArcaptchaDialog;
+
 public class MainActivity extends AppCompatActivity {
     ArcaptchaDialog arcaptchaDialog;
     TextView txvLog;
@@ -27,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 txvLog.setText("Hello");
 
-                arcaptchaDialog = ArcaptchaDialog.getInstance(new ArcaptchaDialog.ArcaptchaListener() {
+                ArcaptchaDialog.ArcaptchaListener arcaptchaListener = new ArcaptchaDialog.ArcaptchaListener() {
                     @Override
                     public void onSuccess(String token) {
                         Toast.makeText(MainActivity.this, "Puzzle Solved, Token Generated!",
@@ -39,10 +41,13 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure() {
-
+                    public void onCancel() {
+                        arcaptchaDialog.dismiss();
                     }
-                });
+                };
+
+                arcaptchaDialog = ArcaptchaDialog.getInstance("s14ajm9xob",
+                        "forsdk.com", arcaptchaListener);
                 arcaptchaDialog.show(getSupportFragmentManager(), "arcaptcha_dialog");
             }
         });

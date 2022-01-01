@@ -29,7 +29,7 @@
             android:layout_height="wrap_content" />
 
         <Button
-            android:text="BtnExe1"
+            android:text="Load Captcha"
             android:id="@+id/btnExe1"
             android:layout_width="160dp"
             android:layout_height="60dp" />
