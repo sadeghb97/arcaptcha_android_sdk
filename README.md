@@ -1,6 +1,6 @@
 ## Android SDK for ARCaptcha
 
-###### [Installation](#installation) | [Example](#display-a-arcaptcha-challenge) | [Customization](#config-params) | [Error handling](#error-handling)
+###### [Installation](#installation) | [Example](#display-a-arcaptcha-challenge) | [Configs](#config-params)
 
 This SDK provides a wrapper for [ARCaptcha](https://www.arcaptcha.ir). You will need to configure a `site key` and a `secret key` from your arcaptcha account in order to use it.
 
