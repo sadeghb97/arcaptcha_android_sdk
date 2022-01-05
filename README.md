@@ -54,7 +54,7 @@ arcaptchaDialog.show(getSupportFragmentManager(), "arcaptcha_dialog_tag");
 |Name|Values/Type|Required|Default|Description|
 |---|---|---|---|---|
 |`siteKey`|String|**Yes**|-|This is your sitekey, this allows you to load challenges. If you need a sitekey, please visit [ARCaptcha](https://arcaptcha.ir/sign-up), and sign up to get your sitekey.|
-|`size`|Enum|No|INVISIBLE|This specifies the "size" of the checkbox component. By default, the checkbox is invisible and the challenge is shown automatically.|
+|`domain`|String|**Yes**|-|-|
 
 
 #### Verify the completed challenge
